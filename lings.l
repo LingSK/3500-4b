@@ -1,5 +1,6 @@
 /* minir.l
     
+    flex minir.l 
 */
 
 %{
@@ -181,6 +182,16 @@ COMMENT #+.*
 "in" {
     printTokenInfo("IN", yytext);
     return T_IN;
+}
+
+"next" {
+    printTokenInfo("NEXT", yytext);
+    return T_NEXT;
+}
+
+"break" {
+    printTokenInfo("BREAK", yytext);
+    return T_BREAK;
 }
 
 "quit" {
