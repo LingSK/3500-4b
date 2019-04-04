@@ -478,7 +478,7 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
 							}
                     else{
                         if(scopeStack.top().findEntry(string($3)).type != INT_OR_STR_OR_FLOAT_OR_BOOL)
-                            yyerror("Arg 3 must be int or string or float or bool"); 
+                            yyerror("Arg 3 must be integer or string or float or bool"); 
                     }
                     printRule("FOR_EXPR", 
                               "FOR ( IDENT IN EXPR ) EXPR");
@@ -511,10 +511,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 {
                     
                     
-                    if(findEntryInAnyScope($1).type!=INT)
-                    {
-                        yyerror("Arg 1 must be int");
-                    } 
+                    
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
                     if($2.type != NULL_TYPE){
@@ -717,7 +714,7 @@ N_ARGS          : N_EXPR
                 {
                     
 					if(($1.type != INT)){
-                        yyerror("Arg 1 must be int");
+                        yyerror("Arg 1 must be integer");
                     } 
 					$$ = $$ + 1;
                     printRule("ARGS", "EXPR");
@@ -725,7 +722,7 @@ N_ARGS          : N_EXPR
                 | N_EXPR T_COMMA N_ARGS
                 {
                     if(($1.type != INT))
-                        yyerror("Arg 1 must be int");
+                        yyerror("Arg 1 must be integer");
 					$$ = $$ + 1 + $3;
                     printRule("ARGS", "EXPR, ARGS");
                 }
