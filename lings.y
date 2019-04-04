@@ -422,7 +422,7 @@ N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR
                 }
                 ;
                 
-N_COND_IF       : T_IF T_RPAREN N_EXPR
+N_COND_IF       : T_IF T_LPAREN N_EXPR
                 {
                     if(($3.type == FUNCTION) || ($3.type == STR) || ($3.type == NULL_TYPE) || ($3.type == LIST)){
                         yyerror("Arg 1 cannot be function or list or null or string");
