@@ -527,7 +527,8 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 					
                     
 						
-				
+                    if($5.type!=INT)
+                        yyerror("Arg 1 must be integer");
                     TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
                         if(assignment_statement){
