@@ -1978,8 +1978,8 @@ yyreduce:
 #line 527 "lings.y" /* yacc.c:1646  */
     {
                     string lexeme = string((yyvsp[-4].text));
-					if((yyvsp[-3].typeInfo).type!=INT&&(yyvsp[0].typeInfo).type==INT)
-						yyerror("Arg 1 must be integer");
+					//if($2.type!=INT)
+						//yyerror("Arg 1 must be integer");
                     if((yyvsp[-3].typeInfo).type != NULL_TYPE && (yyvsp[0].typeInfo).type == LIST)
                         yyerror("Arg 2 cannot be list");
 						
