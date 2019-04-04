@@ -516,15 +516,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
-                    /*
-                    if($2.type != NULL_TYPE){
-                        if(scopeStack.top().findEntry(string($1)).type == NOT_APPLICABLE)
-                            yyerror("hahahhahahhaha T_IDENT does not exist");
-                        if(scopeStack.top().findEntry(string($1)).type != LIST)
-                            yyerror("Arg 1 must be list");
-                      
-                    }
-                    */
+                    
                     
                 }
                 T_ASSIGN N_EXPR
@@ -535,10 +527,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     if($2.type != NULL_TYPE && $2.type == LIST)
                         yyerror("Arg 2 cannot be list");
 						
-					/*
-					if($2.type==INT&&$5.type!=INT)
-						yyerror("Arg 1 must be integer");
-					*/
+				
                     TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
                         if(assignment_statement){
