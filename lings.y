@@ -462,7 +462,7 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
 N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
                 {
                     if($5.type != LIST)
-                        yyerror("Arg 5 must be list");
+                        yyerror("Arg 2 must be list");
                     $$.type = $7.type;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;   
@@ -686,7 +686,7 @@ N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
                     if(scopeStack.top().findEntry(string($1)).type != FUNCTION)
                             yyerror("Arg 2 must be function"); 
                     if($3!=$$.numParams)
-						yyerror("Match arg num");
+						yyerror("Too many parameters in function call");
                     printRule("FUNCTION_CALL", "IDENT"
                               " ( ARG_LIST )");
                     if (findEntryInAnyScope($1).type == NOT_APPLICABLE) {
