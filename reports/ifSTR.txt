@@ -1,1 +1,1 @@
-Line 2: syntax error					      |	Line 2: Arg 1 cannot be function or null or list or string
+Line 2: Arg 1 cannot be function or list or null or string    |	Line 2: Arg 1 cannot be function or null or list or string
