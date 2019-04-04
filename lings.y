@@ -425,7 +425,7 @@ N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR
 N_COND_IF       : T_IF T_LPAREN N_EXPR
                 {
                     if(($3.type == FUNCTION) || ($3.type == STR) || ($3.type == NULL_TYPE) || ($3.type == LIST)){
-                        yyerror("Arg 1 cannot be function or list or null or string");
+                        yyerror("Arg 1 cannot be function or null or list or string");
                     }    
                     printRule("COND_IF","IF ) EXPR");
                 }
@@ -607,7 +607,7 @@ N_INPUT_EXPR    : T_READ T_LPAREN T_RPAREN
                 {
                     printRule("INPUT_EXPR", "READ ( )");
 					
-                    $$.type = INT_OR_STR_OR_FLOAT;
+                    $$.type = NOT_APPLICABLE;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;  
                 }
