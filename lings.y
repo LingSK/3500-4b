@@ -511,7 +511,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 {
                     
                     
-                    if(findEntryInAnyScope($1).type !=int)
+                    if(findEntryInAnyScope($1).type!=INT)
                     {
                         yyerror("Arg 1 must be int");
                     } 
@@ -614,7 +614,7 @@ N_FUNCTION_DEF  : T_FUNCTION
                 }
                 T_LPAREN N_PARAM_LIST T_RPAREN N_COMPOUND_EXPR
                 {
-                    if(scopeStack.top().findEntry(string($6)).type == FUNCTION)
+                    if($6.type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
                     printRule("FUNCTION_DEF",
