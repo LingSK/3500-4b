@@ -516,6 +516,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
+                    /*
                     if($2.type != NULL_TYPE){
                         if(scopeStack.top().findEntry(string($1)).type == NOT_APPLICABLE)
                             yyerror("hahahhahahhaha T_IDENT does not exist");
@@ -523,6 +524,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                             yyerror("Arg 1 must be list");
                       
                     }
+                    */
                     
                 }
                 T_ASSIGN N_EXPR
