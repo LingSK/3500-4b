@@ -511,7 +511,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 {
                     
                     
-                    if($1.type!=int)
+                    if(findEntryInAnyScope($1).type !=int)
                     {
                         yyerror("Arg 1 must be int");
                     } 
