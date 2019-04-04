@@ -528,7 +528,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 T_ASSIGN N_EXPR
                 {
                     string lexeme = string($1);
-					if($1.type!=INT)
+					if(scopeStack.top().findEntry(string($1)).type!=INT)
 						yyerror("Arg 1 must be integer");
                     if($2.type != NULL_TYPE && $2.type == LIST)
                         yyerror("Arg 2 cannot be list");
