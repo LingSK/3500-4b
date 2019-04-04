@@ -1979,7 +1979,7 @@ yyreduce:
 					
                     
 						
-                    if((yyvsp[0].typeInfo).type!=INT)
+                    if(((yyvsp[0].typeInfo).type!=INT)&&((yyvsp[0].typeInfo).type!=BOOL)&&((yyvsp[0].typeInfo).returnType!=INT))
                         yyerror("Arg 1 must be integer");
                     TYPE_INFO typeinfo = {(yyvsp[0].typeInfo).type, (yyvsp[0].typeInfo).numParams, (yyvsp[0].typeInfo).returnType};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
