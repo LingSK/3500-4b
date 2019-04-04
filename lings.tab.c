@@ -1854,7 +1854,7 @@ yyreduce:
 #line 426 "lings.y" /* yacc.c:1646  */
     {
                     if(((yyvsp[0].typeInfo).type == FUNCTION) || ((yyvsp[0].typeInfo).type == STR) || ((yyvsp[0].typeInfo).type == NULL_TYPE) || ((yyvsp[0].typeInfo).type == LIST)){
-                        yyerror("Arg 1 cannot be function or list or null or string");
+                        yyerror("Arg 1 cannot be function or null or list or string");
                     }    
                     printRule("COND_IF","IF ) EXPR");
                 }
@@ -2074,7 +2074,7 @@ yyreduce:
     {
                     printRule("INPUT_EXPR", "READ ( )");
 					
-                    (yyval.typeInfo).type = INT_OR_STR_OR_FLOAT;
+                    (yyval.typeInfo).type = NOT_APPLICABLE;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;  
                 }
