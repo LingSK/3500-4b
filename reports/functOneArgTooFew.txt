@@ -1,1 +1,1 @@
-Line 3: Match arg num					      |	Line 3: Too few parameters in function call
+Line 3: Too many parameters in function call		      |	Line 3: Too few parameters in function call

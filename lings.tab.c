@@ -1901,7 +1901,7 @@ yyreduce:
 #line 463 "lings.y" /* yacc.c:1646  */
     {
                     if((yyvsp[-2].typeInfo).type != LIST)
-                        yyerror("Arg 5 must be list");
+                        yyerror("Arg 2 must be list");
                     (yyval.typeInfo).type = (yyvsp[0].typeInfo).type;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;   
@@ -2175,7 +2175,7 @@ yyreduce:
                     if(scopeStack.top().findEntry(string((yyvsp[-3].text))).type != FUNCTION)
                             yyerror("Arg 2 must be function"); 
                     if((yyvsp[-1].argnum)!=(yyval.typeInfo).numParams)
-						yyerror("Match arg num");
+						yyerror("Too many parameters in function call");
                     printRule("FUNCTION_CALL", "IDENT"
                               " ( ARG_LIST )");
                     if (findEntryInAnyScope((yyvsp[-3].text)).type == NOT_APPLICABLE) {
