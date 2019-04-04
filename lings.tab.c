@@ -1960,24 +1960,24 @@ yyreduce:
 #line 513 "lings.y" /* yacc.c:1646  */
     {
                     
-                    
-                    
+                    if((scopeStack.top().findEntry(string((yyvsp[-1].text))).type!=INT)&&(scopeStack.top().findEntry(string((yyvsp[-1].text))).type!=NOT_APPLICABLE))
+						yyerror("Arg 1 must be integer");
+                    if((yyvsp[0].typeInfo).type != NULL_TYPE && (yyvsp[0].typeInfo).type == LIST)
+                        yyerror("Arg 2 cannot be list");
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
                     
                     
                 }
-#line 1971 "lings.tab.c" /* yacc.c:1646  */
+#line 1973 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 523 "lings.y" /* yacc.c:1646  */
+#line 525 "lings.y" /* yacc.c:1646  */
     {
                     string lexeme = string((yyvsp[-4].text));
-					if((scopeStack.top().findEntry(string((yyvsp[-4].text))).type!=INT)&&(scopeStack.top().findEntry(string((yyvsp[-4].text))).type!=NOT_APPLICABLE))
-						yyerror("Arg 1 must be integer");
-                    if((yyvsp[-3].typeInfo).type != NULL_TYPE && (yyvsp[-3].typeInfo).type == LIST)
-                        yyerror("Arg 2 cannot be list");
+					
+                    
 						
 				
                     TYPE_INFO typeinfo = {(yyvsp[0].typeInfo).type, (yyvsp[0].typeInfo).numParams, (yyvsp[0].typeInfo).returnType};
