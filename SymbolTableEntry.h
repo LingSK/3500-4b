@@ -15,8 +15,13 @@ using namespace std;
 #define LIST        32
 #define FUNCTION    64
 #define INT_OR_STR_OR_FLOAT_OR_BOOL     30
+#define INT_OR_STR_OR_FLOAT  40
 
 #define NOT_APPLICABLE  -1
+
+#define LOGICAL 1
+#define ARITHMETIC  1
+#define RELATIONAL 1
 
 typedef struct {
   int type;         // one of the above type codes

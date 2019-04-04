@@ -51,6 +51,7 @@ extern "C"
 %union {
     char* text;
     TYPE_INFO typeInfo;
+	int argnum;
 };
 
 %token T_IDENT T_INTCONST T_FLOATCONST T_UNKNOWN T_STRCONST 
@@ -65,8 +66,9 @@ extern "C"
 %token T_OR T_ASSIGN T_LIST
 
 %type <text> T_IDENT
+%type <argnum> N_ARGS N_ARG_LIST N_NO_ARGS
 %type <typeInfo> N_CONST N_EXPR N_IF_EXPR N_WHILE_EXPR N_FOR_EXPR N_COMPOUND_EXPR N_ASSIGNMENT_EXPR 
-%type <typeInfo> N_OUTPUT_EXPR N_INPUT_EXPR N_LIST_EXPR N_FUNCTION_DEF N_FUNCTION_CALL N_QUIT_EXPR N_EXPR_LIST N_INDEX
+%type <typeInfo> N_OUTPUT_EXPR N_INPUT_EXPR N_LIST_EXPR N_FUNCTION_DEF N_QUIT_EXPR N_EXPR_LIST N_INDEX N_FUNCTION_CALL 
 %type <typeInfo> N_ADD_OP N_MULT_OP N_ARITHLOGIC_EXPR N_SIMPLE_ARITHLOGIC N_ADD_OP_LIST N_TERM N_MULT_OP_LIST N_FACTOR 
 %type <typeInfo> N_SINGLE_ELEMENT N_ENTIRE_VAR N_VAR N_COND_IF N_THEN_EXPR
 /*
@@ -223,11 +225,11 @@ N_ARITHLOGIC_EXPR : N_SIMPLE_ARITHLOGIC
                 | N_SIMPLE_ARITHLOGIC N_REL_OP
                   N_SIMPLE_ARITHLOGIC
                 {
-                    if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                    if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                     {
                         yyerror("Arg 1 must be integer or float or bool");
                     }
-                    if($3.type != INT && $3.type != BOOL && $3.type != FLOAT && $3.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                    if($3.type != INT && $3.type != BOOL && $3.type != FLOAT && $3.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -247,7 +249,7 @@ N_SIMPLE_ARITHLOGIC : N_TERM N_ADD_OP_LIST
                     if($2.type == NOT_APPLICABLE){
                         $$.type = $1.type;                       
                     }else{
-                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                         {
                             yyerror("Arg 1 must be integer or float or bool");
                         }
@@ -266,7 +268,7 @@ N_ADD_OP_LIST	: N_ADD_OP N_TERM N_ADD_OP_LIST
                 {
                     printRule("ADD_OP_LIST", 
                               "ADD_OP TERM ADD_OP_LIST");
-                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -301,7 +303,7 @@ N_TERM		: N_FACTOR N_MULT_OP_LIST
                     if($2.type == NOT_APPLICABLE){
                         $$.type = $1.type;                       
                     }else{
-                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                         {
                             yyerror("Arg 1 must be integer or float or bool");
                         }
@@ -320,7 +322,7 @@ N_MULT_OP_LIST	: N_MULT_OP N_FACTOR N_MULT_OP_LIST
                 {
                     printRule("MULT_OP_LIST", 
                               "MULT_OP FACTOR MULT_OP_LIST");
-                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_BOOL_OR_FLOAT)
+                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -377,10 +379,16 @@ N_COMPOUND_EXPR : T_LBRACE N_EXPR N_EXPR_LIST T_RBRACE
                               "{ EXPR EXPR_LIST }");
                     $$.type = $2.type;
                     $$.numParams = $2.numParams;
-                    if($3==/*epsilon*/)
-                        $$.returnType = $2.returnType; 
-                    else
+                    if($3.type==NOT_APPLICABLE){
+                        $$.type = $2.type;
+                        $$.numParams = $2.numParams;
+                        $$.returnType = $2.returnType;
+                        }
+                    else{
+                        $$.type = $3.type;
+                        $$.numParams = $3.numParams;
                         $$.returnType = $3.returnType;
+                        }
                 }
                 ;
 
@@ -406,7 +414,7 @@ N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR
                     if(($3.type == FUNCTION)){
                         yyerror("Arg 2 cannot be function");
                     }   
-                    if(($4.type == FUNCTION)){
+                    if(($5.type == FUNCTION)){
                         yyerror("Arg 3 cannot be function");
                     }   
                     printRule("IF_EXPR", 
@@ -417,9 +425,9 @@ N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR
 N_COND_IF       : T_IF T_RPAREN N_EXPR
                 {
                     if(($3.type == FUNCTION) || ($3.type == STR) || ($3.type == NULL_TYPE) || ($3.type == LIST)){
-                        yyerror("Arg 1 cannot be function or null or list or string");
+                        yyerror("Arg 1 cannot be function or list or null or string");
                     }    
-                    printRUle("COND_IF","IF ) EXPR"_;
+                    printRule("COND_IF","IF ) EXPR");
                 }
                 ;
 
@@ -453,12 +461,13 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
 
 N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
                 {
-                    if(scopeStack.top().findEntry(string($5)).type != LIST)
+                    if($5.type != LIST)
                         yyerror("Arg 5 must be list");
                     $$.type = $7.type;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;   
                     if(scopeStack.top().findEntry(string($3)).type == NOT_APPLICABLE)
+					{
                         string lexeme = string($3);
                         if(assignment_statement){
                             printf("___Adding %s to symbol table\n", $3);
@@ -466,6 +475,7 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
                         TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE};
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
+							}
                     else{
                         if(scopeStack.top().findEntry(string($3)).type != INT_OR_STR_OR_FLOAT_OR_BOOL)
                             yyerror("Arg 3 must be int or string or float or bool"); 
@@ -499,10 +509,14 @@ N_CONST_LIST    : N_CONST T_COMMA N_CONST_LIST
 
 N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 {
+                    
+                    
+                    if($1.type!=int)
+                    {
+                        yyerror("Arg 1 must be int");
+                    } 
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
-                    
-                    $1.type = INT;  
                     if($2.type != NULL_TYPE){
                         if(scopeStack.top().findEntry(string($1)).type == NOT_APPLICABLE)
                             yyerror("hahahhahahhaha T_IDENT does not exist");
@@ -587,6 +601,7 @@ N_OUTPUT_EXPR   : T_PRINT T_LPAREN N_EXPR T_RPAREN
 N_INPUT_EXPR    : T_READ T_LPAREN T_RPAREN
                 {
                     printRule("INPUT_EXPR", "READ ( )");
+					
                     $$.type = INT_OR_STR_OR_FLOAT;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;  
@@ -599,15 +614,15 @@ N_FUNCTION_DEF  : T_FUNCTION
                 }
                 T_LPAREN N_PARAM_LIST T_RPAREN N_COMPOUND_EXPR
                 {
-                    if(scopeStack.top().findEntry(string($4)).type == FUNCTION)
+                    if(scopeStack.top().findEntry(string($6)).type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
                     printRule("FUNCTION_DEF",
                               "FUNCTION ( PARAM_LIST )"
                               " COMPOUND_EXPR");
                     $$.type = FUNCTION;
-                    $$.numParams = PARAM_LIST;
-                    $$.returnType = $5.returnType; 
+                    $$.numParams = scopeStack.top().getSize();
+                    $$.returnType = $6.returnType; 
                     endScope();
                 }
                 ;
@@ -667,24 +682,28 @@ N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
                 {
                     if(scopeStack.top().findEntry(string($1)).type != FUNCTION)
                             yyerror("Arg 2 must be function"); 
-                    
+                    if($3!=$$.numParams)
+						yyerror("Match arg num");
                     printRule("FUNCTION_CALL", "IDENT"
                               " ( ARG_LIST )");
                     if (findEntryInAnyScope($1).type == NOT_APPLICABLE) {
                         yyerror("Undefined identifier");
                         return(0);
                     }
-                    $$.returnType = $1.returnType; 
+                    
                 }
                 ;
 
 N_ARG_LIST      : N_ARGS
                 {
                     printRule("ARG_LIST", "ARGS");
+					$$ = $1;
+					
                 }
                 | N_NO_ARGS
                 {
                     printRule("ARG_LIST", "NO_ARGS");
+					$$ = 0;
                 }
                 ;
 
@@ -696,15 +715,18 @@ N_NO_ARGS       : /* epsilon */
 
 N_ARGS          : N_EXPR
                 {
-                    if(($1.type != INT)){
+                    
+					if(($1.type != INT)){
                         yyerror("Arg 1 must be int");
-                    }   
+                    } 
+					$$ = $$ + 1;
                     printRule("ARGS", "EXPR");
                 }
                 | N_EXPR T_COMMA N_ARGS
                 {
-                    if(($1.type != INT)){
+                    if(($1.type != INT))
                         yyerror("Arg 1 must be int");
+					$$ = $$ + 1 + $3;
                     printRule("ARGS", "EXPR, ARGS");
                 }
                 ;
@@ -822,7 +844,7 @@ N_SINGLE_ELEMENT : T_IDENT T_LBRACKET T_LBRACKET N_EXPR
                     }
                     if(scopeStack.top().findEntry(string($1)).type != LIST)
                         yyerror("Arg 1 must be list");
-                    $$.type = INT_OR_STR_OR_BOOL_OR_FLOAT;
+                    $$.type = INT_OR_STR_OR_FLOAT_OR_BOOL;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;                  
                 }

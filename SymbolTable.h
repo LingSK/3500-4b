@@ -28,7 +28,12 @@ public:
     }
     else return(false);
   }
-
+  
+  int getSize()
+  {
+	  return hashTable.size();
+  }
+  
   bool changeEntry(SYMBOL_TABLE_ENTRY x)
   {
     // Make sure the entry we want to change in the symbol table 
