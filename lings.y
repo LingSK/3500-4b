@@ -509,16 +509,12 @@ N_CONST_LIST    : N_CONST T_COMMA N_CONST_LIST
                 }
                 ;
 
-N_ASSIGNMENT_EXPR : T_IDENT 
+N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 {
+                    
                     if((scopeStack.top().findEntry(string($1)).type!=INT)&&(scopeStack.top().findEntry(string($1)).type!=NOT_APPLICABLE))
 						yyerror("Arg 1 must be integer");
-                }
-                N_INDEX
-                {
-                    
-                    
-                    if($3.type != NULL_TYPE && $3.type == LIST)
+                    if($2.type != NULL_TYPE && $2.type == LIST)
                         yyerror("Arg 2 cannot be list");
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
@@ -532,7 +528,7 @@ N_ASSIGNMENT_EXPR : T_IDENT
                     
 						
 				
-                    TYPE_INFO typeinfo = {$6.type, $6.numParams, $6.returnType};
+                    TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
                         if(assignment_statement){
                             printf("___Adding %s to symbol table\n",
@@ -540,11 +536,12 @@ N_ASSIGNMENT_EXPR : T_IDENT
                         scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
                     }       
-                    $$.type = $6.type;
-                    $$.numParams = $6.numParams;
-                    $$.returnType = $6.returnType;	                    
+                    $$.type = $5.type;
+                    $$.numParams = $5.numParams;
+                    $$.returnType = $5.returnType;	                    
                 }
                 ;
+
 
 N_INDEX :       T_LBRACKET T_LBRACKET N_EXPR T_RBRACKET
                 T_RBRACKET
