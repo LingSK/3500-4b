@@ -1,0 +1,1 @@
+Line 2: syntax error					      |	Line 3: Arg 2 cannot be function
