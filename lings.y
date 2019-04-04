@@ -461,6 +461,8 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
 
 N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
                 {
+                    if($3.type == FUNCTION||$3.type == NOT_APPLICABLE||$3.type == LIST)
+                        yyerror("Arg 1 cannot be function or null or list");
                     if($5.type != LIST)
                         yyerror("Arg 2 must be list");
                     $$.type = $7.type;
