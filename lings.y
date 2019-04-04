@@ -838,8 +838,10 @@ N_SINGLE_ELEMENT : T_IDENT T_LBRACKET T_LBRACKET N_EXPR
                         yyerror("Undefined identifier");
                         return(0);
                     }
+                    /*
                     if(scopeStack.top().findEntry(string($1)).type != LIST)
                         yyerror("Arg 1 must be list");
+                        */
                     $$.type = INT_OR_STR_OR_FLOAT_OR_BOOL;
                     $$.numParams = NOT_APPLICABLE;
                     $$.returnType = NOT_APPLICABLE;                  
