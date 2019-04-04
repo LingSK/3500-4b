@@ -515,11 +515,11 @@ static const yytype_uint16 yyrline[] =
      142,   149,   156,   163,   170,   180,   187,   194,   201,   208,
      217,   225,   245,   267,   290,   298,   321,   338,   346,   353,
      360,   367,   376,   395,   403,   408,   412,   425,   434,   440,
-     439,   462,   491,   501,   506,   513,   512,   546,   555,   563,
-     572,   585,   598,   609,   608,   627,   631,   638,   643,   660,
-     678,   694,   700,   708,   713,   722,   731,   738,   745,   754,
-     761,   768,   775,   782,   791,   795,   799,   803,   807,   811,
-     817,   824,   833,   852
+     439,   462,   491,   501,   506,   513,   512,   547,   556,   564,
+     573,   586,   599,   610,   609,   628,   632,   639,   644,   661,
+     679,   695,   701,   709,   714,   723,   732,   739,   746,   755,
+     762,   769,   776,   783,   792,   796,   800,   804,   808,   812,
+     818,   825,   834,   853
 };
 #endif
 
@@ -1979,7 +1979,8 @@ yyreduce:
 					
                     
 						
-				
+                    if((yyvsp[0].typeInfo).type!=INT)
+                        yyerror("Arg 1 must be integer");
                     TYPE_INFO typeinfo = {(yyvsp[0].typeInfo).type, (yyvsp[0].typeInfo).numParams, (yyvsp[0].typeInfo).returnType};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
                         if(assignment_statement){
@@ -1992,44 +1993,44 @@ yyreduce:
                     (yyval.typeInfo).numParams = (yyvsp[0].typeInfo).numParams;
                     (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).returnType;	                    
                 }
-#line 1996 "lings.tab.c" /* yacc.c:1646  */
+#line 1997 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 548 "lings.y" /* yacc.c:1646  */
+#line 549 "lings.y" /* yacc.c:1646  */
     {
                     printRule("INDEX", " [[ EXPR ]]");
                     (yyval.typeInfo).type = (yyvsp[-2].typeInfo).type;
                     (yyval.typeInfo).numParams = (yyvsp[-2].typeInfo).numParams;
                     (yyval.typeInfo).returnType = (yyvsp[-2].typeInfo).returnType;			    
                 }
-#line 2007 "lings.tab.c" /* yacc.c:1646  */
+#line 2008 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 555 "lings.y" /* yacc.c:1646  */
+#line 556 "lings.y" /* yacc.c:1646  */
     {
                     (yyval.typeInfo).type = NULL_TYPE;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                     printRule("INDEX", " epsilon");
                 }
-#line 2018 "lings.tab.c" /* yacc.c:1646  */
+#line 2019 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 564 "lings.y" /* yacc.c:1646  */
+#line 565 "lings.y" /* yacc.c:1646  */
     {
                     printRule("QUIT_EXPR", "QUIT()");
                     (yyval.typeInfo).type = NULL_TYPE;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;                       
                 }
-#line 2029 "lings.tab.c" /* yacc.c:1646  */
+#line 2030 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 573 "lings.y" /* yacc.c:1646  */
+#line 574 "lings.y" /* yacc.c:1646  */
     {
                     printRule("OUTPUT_EXPR", 
                               "PRINT ( EXPR )");
@@ -2042,11 +2043,11 @@ yyreduce:
                     (yyval.typeInfo).returnType = (yyvsp[-1].typeInfo).returnType;                      
                               
                 }
-#line 2046 "lings.tab.c" /* yacc.c:1646  */
+#line 2047 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 586 "lings.y" /* yacc.c:1646  */
+#line 587 "lings.y" /* yacc.c:1646  */
     {
                     printRule("OUTPUT_EXPR", 
                               "CAT ( EXPR )");
@@ -2057,11 +2058,11 @@ yyreduce:
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;                                
                 }
-#line 2061 "lings.tab.c" /* yacc.c:1646  */
+#line 2062 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 599 "lings.y" /* yacc.c:1646  */
+#line 600 "lings.y" /* yacc.c:1646  */
     {
                     printRule("INPUT_EXPR", "READ ( )");
 					
@@ -2069,19 +2070,19 @@ yyreduce:
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;  
                 }
-#line 2073 "lings.tab.c" /* yacc.c:1646  */
+#line 2074 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 609 "lings.y" /* yacc.c:1646  */
+#line 610 "lings.y" /* yacc.c:1646  */
     {
                     beginScope();
                 }
-#line 2081 "lings.tab.c" /* yacc.c:1646  */
+#line 2082 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 613 "lings.y" /* yacc.c:1646  */
+#line 614 "lings.y" /* yacc.c:1646  */
     {
                     if((yyvsp[0].typeInfo).type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
@@ -2094,35 +2095,35 @@ yyreduce:
                     (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).returnType; 
                     endScope();
                 }
-#line 2098 "lings.tab.c" /* yacc.c:1646  */
+#line 2099 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 628 "lings.y" /* yacc.c:1646  */
+#line 629 "lings.y" /* yacc.c:1646  */
     {
                     printRule("PARAM_LIST", "PARAMS");
                 }
-#line 2106 "lings.tab.c" /* yacc.c:1646  */
+#line 2107 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 632 "lings.y" /* yacc.c:1646  */
+#line 633 "lings.y" /* yacc.c:1646  */
     {
                     printRule("PARAM_LIST", "NO PARAMS");
                 }
-#line 2114 "lings.tab.c" /* yacc.c:1646  */
+#line 2115 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 638 "lings.y" /* yacc.c:1646  */
+#line 639 "lings.y" /* yacc.c:1646  */
     {
                     printRule("NO_PARAMS", "epsilon");
                 }
-#line 2122 "lings.tab.c" /* yacc.c:1646  */
+#line 2123 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 644 "lings.y" /* yacc.c:1646  */
+#line 645 "lings.y" /* yacc.c:1646  */
     {
                     printRule("PARAMS", "IDENT");
                     string lexeme = string((yyvsp[0].text));
@@ -2139,11 +2140,11 @@ yyreduce:
                     
                     
                 }
-#line 2143 "lings.tab.c" /* yacc.c:1646  */
+#line 2144 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 661 "lings.y" /* yacc.c:1646  */
+#line 662 "lings.y" /* yacc.c:1646  */
     {
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string((yyvsp[-2].text));
@@ -2159,11 +2160,11 @@ yyreduce:
                     }
                     
                 }
-#line 2163 "lings.tab.c" /* yacc.c:1646  */
+#line 2164 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 679 "lings.y" /* yacc.c:1646  */
+#line 680 "lings.y" /* yacc.c:1646  */
     {
                     if(scopeStack.top().findEntry(string((yyvsp[-3].text))).type != FUNCTION)
                             yyerror("Arg 2 must be function"); 
@@ -2177,38 +2178,38 @@ yyreduce:
                     }
                     
                 }
-#line 2181 "lings.tab.c" /* yacc.c:1646  */
+#line 2182 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 695 "lings.y" /* yacc.c:1646  */
+#line 696 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ARG_LIST", "ARGS");
 					(yyval.argnum) = (yyvsp[0].argnum);
 					
                 }
-#line 2191 "lings.tab.c" /* yacc.c:1646  */
+#line 2192 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 701 "lings.y" /* yacc.c:1646  */
+#line 702 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ARG_LIST", "NO_ARGS");
 					(yyval.argnum) = 0;
                 }
-#line 2200 "lings.tab.c" /* yacc.c:1646  */
+#line 2201 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 708 "lings.y" /* yacc.c:1646  */
+#line 709 "lings.y" /* yacc.c:1646  */
     {
                     printRule("NO_ARGS", "epsilon");
                 }
-#line 2208 "lings.tab.c" /* yacc.c:1646  */
+#line 2209 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 714 "lings.y" /* yacc.c:1646  */
+#line 715 "lings.y" /* yacc.c:1646  */
     {
                     
 					if(((yyvsp[0].typeInfo).type != INT)){
@@ -2217,180 +2218,180 @@ yyreduce:
 					(yyval.argnum) = (yyval.argnum) + 1;
                     printRule("ARGS", "EXPR");
                 }
-#line 2221 "lings.tab.c" /* yacc.c:1646  */
+#line 2222 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 723 "lings.y" /* yacc.c:1646  */
+#line 724 "lings.y" /* yacc.c:1646  */
     {
                     if(((yyvsp[-2].typeInfo).type != INT))
                         yyerror("Arg 1 must be integer");
 					(yyval.argnum) = (yyval.argnum) + 1 + (yyvsp[0].argnum);
                     printRule("ARGS", "EXPR, ARGS");
                 }
-#line 2232 "lings.tab.c" /* yacc.c:1646  */
+#line 2233 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 732 "lings.y" /* yacc.c:1646  */
+#line 733 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ADD_OP", "+");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                 }
-#line 2243 "lings.tab.c" /* yacc.c:1646  */
+#line 2244 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 739 "lings.y" /* yacc.c:1646  */
+#line 740 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ADD_OP", "-");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                     }
-#line 2254 "lings.tab.c" /* yacc.c:1646  */
+#line 2255 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 746 "lings.y" /* yacc.c:1646  */
+#line 747 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ADD_OP", "|");
                     (yyval.typeInfo).type = LOGICAL;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                     }
-#line 2265 "lings.tab.c" /* yacc.c:1646  */
+#line 2266 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 755 "lings.y" /* yacc.c:1646  */
+#line 756 "lings.y" /* yacc.c:1646  */
     {
                     printRule("MULT_OP", "*");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                 }
-#line 2276 "lings.tab.c" /* yacc.c:1646  */
+#line 2277 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 762 "lings.y" /* yacc.c:1646  */
+#line 763 "lings.y" /* yacc.c:1646  */
     {
                     printRule("MULT_OP", "/");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                 }
-#line 2287 "lings.tab.c" /* yacc.c:1646  */
+#line 2288 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 769 "lings.y" /* yacc.c:1646  */
+#line 770 "lings.y" /* yacc.c:1646  */
     {
                     printRule("MULT_OP", "&");
                     (yyval.typeInfo).type = LOGICAL;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                 }
-#line 2298 "lings.tab.c" /* yacc.c:1646  */
+#line 2299 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 776 "lings.y" /* yacc.c:1646  */
+#line 777 "lings.y" /* yacc.c:1646  */
     {
                     printRule("MULT_OP", "\%\%");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;
                 }
-#line 2309 "lings.tab.c" /* yacc.c:1646  */
+#line 2310 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 783 "lings.y" /* yacc.c:1646  */
+#line 784 "lings.y" /* yacc.c:1646  */
     {
                     printRule("MULT_OP", "^");
                     (yyval.typeInfo).type = ARITHMETIC;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;                
                 }
-#line 2320 "lings.tab.c" /* yacc.c:1646  */
+#line 2321 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 792 "lings.y" /* yacc.c:1646  */
+#line 793 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", "<");
                 }
-#line 2328 "lings.tab.c" /* yacc.c:1646  */
+#line 2329 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 796 "lings.y" /* yacc.c:1646  */
+#line 797 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", ">");
                 }
-#line 2336 "lings.tab.c" /* yacc.c:1646  */
+#line 2337 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 800 "lings.y" /* yacc.c:1646  */
+#line 801 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", "<=");
                 }
-#line 2344 "lings.tab.c" /* yacc.c:1646  */
+#line 2345 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 804 "lings.y" /* yacc.c:1646  */
+#line 805 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", ">=");
                 }
-#line 2352 "lings.tab.c" /* yacc.c:1646  */
+#line 2353 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 808 "lings.y" /* yacc.c:1646  */
+#line 809 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", "==");
                 }
-#line 2360 "lings.tab.c" /* yacc.c:1646  */
+#line 2361 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 812 "lings.y" /* yacc.c:1646  */
+#line 813 "lings.y" /* yacc.c:1646  */
     {
                     printRule("REL_OP", "!=");
                 }
-#line 2368 "lings.tab.c" /* yacc.c:1646  */
+#line 2369 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 818 "lings.y" /* yacc.c:1646  */
+#line 819 "lings.y" /* yacc.c:1646  */
     {
                     printRule("VAR", "ENTIRE_VAR");
                     (yyval.typeInfo).type = (yyvsp[0].typeInfo).type;
                     (yyval.typeInfo).numParams = (yyvsp[0].typeInfo).numParams;
                     (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).returnType;                     
                 }
-#line 2379 "lings.tab.c" /* yacc.c:1646  */
+#line 2380 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 825 "lings.y" /* yacc.c:1646  */
+#line 826 "lings.y" /* yacc.c:1646  */
     {
                     printRule("VAR", "SINGLE_ELEMENT");
                     (yyval.typeInfo).type = (yyvsp[0].typeInfo).type;
                     (yyval.typeInfo).numParams = (yyvsp[0].typeInfo).numParams;
                     (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).returnType;  
                     }
-#line 2390 "lings.tab.c" /* yacc.c:1646  */
+#line 2391 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 835 "lings.y" /* yacc.c:1646  */
+#line 836 "lings.y" /* yacc.c:1646  */
     {
                     printRule("SINGLE_ELEMENT", "IDENT"
                               " [[ EXPR ]]");
@@ -2406,11 +2407,11 @@ yyreduce:
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;                  
                 }
-#line 2410 "lings.tab.c" /* yacc.c:1646  */
+#line 2411 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 853 "lings.y" /* yacc.c:1646  */
+#line 854 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ENTIRE_VAR", "IDENT");
                     if(findEntryInAnyScope((yyvsp[0].text)).type == NOT_APPLICABLE)
@@ -2422,11 +2423,11 @@ yyreduce:
                     (yyval.typeInfo).numParams = findEntryInAnyScope((yyvsp[0].text)).numParams;
                     (yyval.typeInfo).returnType = findEntryInAnyScope((yyvsp[0].text)).returnType; 
                 }
-#line 2426 "lings.tab.c" /* yacc.c:1646  */
+#line 2427 "lings.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2430 "lings.tab.c" /* yacc.c:1646  */
+#line 2431 "lings.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2654,7 +2655,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 866 "lings.y" /* yacc.c:1906  */
+#line 867 "lings.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"
