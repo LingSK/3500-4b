@@ -519,7 +519,7 @@ static const yytype_uint16 yyrline[] =
      571,   584,   597,   608,   607,   626,   630,   637,   642,   659,
      677,   693,   699,   707,   712,   721,   730,   737,   744,   753,
      760,   767,   774,   781,   790,   794,   798,   802,   806,   810,
-     816,   823,   832,   849
+     816,   823,   832,   851
 };
 #endif
 
@@ -2398,17 +2398,19 @@ yyreduce:
                         yyerror("Undefined identifier");
                         return(0);
                     }
-                    if(scopeStack.top().findEntry(string((yyvsp[-5].text))).type != LIST)
+                    /*
+                    if(scopeStack.top().findEntry(string($1)).type != LIST)
                         yyerror("Arg 1 must be list");
+                        */
                     (yyval.typeInfo).type = INT_OR_STR_OR_FLOAT_OR_BOOL;
                     (yyval.typeInfo).numParams = NOT_APPLICABLE;
                     (yyval.typeInfo).returnType = NOT_APPLICABLE;                  
                 }
-#line 2408 "lings.tab.c" /* yacc.c:1646  */
+#line 2410 "lings.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 850 "lings.y" /* yacc.c:1646  */
+#line 852 "lings.y" /* yacc.c:1646  */
     {
                     printRule("ENTIRE_VAR", "IDENT");
                     if(findEntryInAnyScope((yyvsp[0].text)).type == NOT_APPLICABLE)
@@ -2420,11 +2422,11 @@ yyreduce:
                     (yyval.typeInfo).numParams = findEntryInAnyScope((yyvsp[0].text)).numParams;
                     (yyval.typeInfo).returnType = findEntryInAnyScope((yyvsp[0].text)).returnType; 
                 }
-#line 2424 "lings.tab.c" /* yacc.c:1646  */
+#line 2426 "lings.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2428 "lings.tab.c" /* yacc.c:1646  */
+#line 2430 "lings.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2652,7 +2654,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 863 "lings.y" /* yacc.c:1906  */
+#line 865 "lings.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"
