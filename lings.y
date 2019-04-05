@@ -558,7 +558,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
 					if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
-						if(!isIntCompatible(exprTypeInfo)&&(pdf==true)&&(layer>0))
+						if(!isIntCompatible(exprTypeInfo.type)&&(pdf==true)&&(layer>0))
 						{
 						yyerror("Arg 1 must be integer");
 						}
