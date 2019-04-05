@@ -2014,7 +2014,7 @@ yyreduce:
                     
                     string lexeme = string((yyvsp[-4].text));
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
-					//cout<<exprTypeInfo.param<<endl;
+					if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
 						if(((exprTypeInfo.param)==true)&&((isIntCompatible((yyvsp[0].typeInfo).type))==false))
 						{
 						yyerror("Arg 1 must be integer");
