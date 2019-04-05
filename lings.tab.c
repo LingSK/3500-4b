@@ -2015,7 +2015,7 @@ yyreduce:
                     
                     string lexeme = string((yyvsp[-4].text));
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
-					if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
+					//if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
 						if(!isIntCompatible(exprTypeInfo.type)&&(pdf==true)&&(layer>0))
 						{
 						yyerror("Arg 1 must be integer");
