@@ -678,9 +678,7 @@ N_PARAMS        : T_IDENT
                 {
                     printRule("PARAMS", "IDENT");
                     string lexeme = string($1);
-                    if(!suppressTokenOutput)
-                      printf("___Adding %s to symbol table\n",
-                             $1);
+                   
                     // assuming params are ints
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
@@ -695,9 +693,7 @@ N_PARAMS        : T_IDENT
                 {
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string($1);
-                    if(!suppressTokenOutput)
-                     printf("___Adding %s to symbol table\n",
-                           $1);
+                    
                     // assuming params are ints 
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
