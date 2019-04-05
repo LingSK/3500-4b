@@ -31,7 +31,7 @@ void beginScope();
 void endScope();
 void cleanUp();
 TYPE_INFO findEntryInAnyScope(const string the_name);
-
+int layer=0;
 void printTokenInfo(const char* token_type, const char* lexeme);
 
 void printRule(const char *, const char *);
@@ -543,11 +543,11 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                       
                       scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
                
-						$<flag>$ = false;
+						pdf = false;
 					}
                     else 
 					{ 
-						$<flag>$ = true;
+						pdf = true;
                     }
                     
                 }
@@ -557,9 +557,10 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
 					if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
-						if(((exprTypeInfo.param)==true)&&((isIntCompatible($5.type))==false))
+						if(!isIntCompatible(exprTypeInfo)&&(pdf==true)&&(layer>0))
 						{
-						yyerror("Arg 1 must be integer");
+						yyerror("Arg 1 must be 
+						integer");
 						}
                     
                     scopeStack.top().changeEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType}));
@@ -637,6 +638,7 @@ N_INPUT_EXPR    : T_READ T_LPAREN T_RPAREN
 N_FUNCTION_DEF  : T_FUNCTION
                 {
                     beginScope();
+					layer+=1;
                 }
                 T_LPAREN N_PARAM_LIST 
 				{
@@ -655,6 +657,7 @@ N_FUNCTION_DEF  : T_FUNCTION
                     $$.numParams = x;
                     $$.returnType = $7.returnType; 
                     endScope();
+					layer-=1;
                 }
                 ;
 
