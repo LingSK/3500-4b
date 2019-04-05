@@ -32,6 +32,7 @@ void endScope();
 void cleanUp();
 TYPE_INFO findEntryInAnyScope(const string the_name);
 int layer=0;
+pdf=false;
 void printTokenInfo(const char* token_type, const char* lexeme);
 
 void printRule(const char *, const char *);
