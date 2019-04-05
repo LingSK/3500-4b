@@ -676,39 +676,38 @@ N_NO_PARAMS     : /* epsilon */
 
 N_PARAMS        : T_IDENT
                 {
-                    
-					printRule("PARAMS", "IDENT");
+                    printRule("PARAMS", "IDENT");
                     string lexeme = string($1);
-                    if(assignment_statement){
-                        //printf("___Adding %s to symbol table\n", $1);
-                    }
-                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
-                    bool success = scopeStack.top().addEntry(
-                        SYMBOL_TABLE_ENTRY(lexeme, {INT, NOT_APPLICABLE, NOT_APPLICABLE,true}));
-                    if(!success) {
-                        yyerror("Multiply defined identifier");
-                        return(0);
-                    }
-                    
-                    
+                    if(!suppressTokenOutput)
+                      printf("___Adding %s to symbol table\n",
+                             $1);
+                    // assuming params are ints
+                    TYPE_INFO exprTypeInfo = 
+                     {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
+                    bool success = 
+                     scopeStack.top().
+                      addEntry(SYMBOL_TABLE_ENTRY
+                        (lexeme, exprTypeInfo));
+                    if(!success) 
+                    yyerror("Multiply defined identifier");
                 }
                 | T_IDENT T_COMMA N_PARAMS
                 {
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string($1);
-                    if(assignment_statement){
-                    //printf("___Adding %s to symbol table\n", $1);
-					}
-                    
-                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
-                    bool success = scopeStack.top().addEntry(
-                        SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
-                    if(!success) {
-                        yyerror("Multiply defined identifier");
-                        return(0);
-                    }
-                    
+                    if(!suppressTokenOutput)
+                     printf("___Adding %s to symbol table\n",
+                           $1);
+                    // assuming params are ints 
+                    TYPE_INFO exprTypeInfo = 
+                     {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
+                    bool success =
+                     scopeStack.top().addEntry(
+                      SYMBOL_TABLE_ENTRY(lexeme, exprTypeInfo));
+                    if(!success) 
+				yyerror("Multiply defined identifier");
                 }
+                ;
                 ;
 
 N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
