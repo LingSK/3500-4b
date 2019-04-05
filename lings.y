@@ -559,8 +559,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 					if(findEntryInAnyScope(lexeme).type!=NOT_APPLICABLE)
 						if(!isIntCompatible(exprTypeInfo)&&(pdf==true)&&(layer>0))
 						{
-						yyerror("Arg 1 must be 
-						integer");
+						yyerror("Arg 1 must be integer");
 						}
                     
                     scopeStack.top().changeEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType}));
