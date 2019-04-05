@@ -19,10 +19,14 @@ using namespace std;
 
 int line_num = 1;
 bool assignment_statement = false;
-
+bool isIntOrFloatOrBoolCompatible(const int theType);
+bool isIntCompatible(const int theType);
+bool isBoolCompatible(const int theType);
+bool isFloatCompatible(const int theType);
+bool isInvalidOperandType(const int theType);
 
 stack<SYMBOL_TABLE> scopeStack; // stack of scope hashtables
-
+int x=0;
 void beginScope();
 void endScope();
 void cleanUp();
@@ -66,7 +70,7 @@ extern "C"
 %token T_OR T_ASSIGN T_LIST
 
 %type <text> T_IDENT
-%type <argnum> N_ARGS N_ARG_LIST N_NO_ARGS
+%type <typeInfo> N_ARGS N_ARG_LIST N_NO_ARGS
 %type <typeInfo> N_CONST N_EXPR N_IF_EXPR N_WHILE_EXPR N_FOR_EXPR N_COMPOUND_EXPR N_ASSIGNMENT_EXPR 
 %type <typeInfo> N_OUTPUT_EXPR N_INPUT_EXPR N_LIST_EXPR N_FUNCTION_DEF N_QUIT_EXPR N_EXPR_LIST N_INDEX N_FUNCTION_CALL 
 %type <typeInfo> N_ADD_OP N_MULT_OP N_ARITHLOGIC_EXPR N_SIMPLE_ARITHLOGIC N_ADD_OP_LIST N_TERM N_MULT_OP_LIST N_FACTOR 
@@ -225,11 +229,11 @@ N_ARITHLOGIC_EXPR : N_SIMPLE_ARITHLOGIC
                 | N_SIMPLE_ARITHLOGIC N_REL_OP
                   N_SIMPLE_ARITHLOGIC
                 {
-                    if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                    if(isInvalidOperandType($1.type))
                     {
                         yyerror("Arg 1 must be integer or float or bool");
                     }
-                    if($3.type != INT && $3.type != BOOL && $3.type != FLOAT && $3.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                    if(isInvalidOperandType($3.type))
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -249,7 +253,7 @@ N_SIMPLE_ARITHLOGIC : N_TERM N_ADD_OP_LIST
                     if($2.type == NOT_APPLICABLE){
                         $$.type = $1.type;                       
                     }else{
-                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                        if(isInvalidOperandType($1.type))
                         {
                             yyerror("Arg 1 must be integer or float or bool");
                         }
@@ -268,7 +272,7 @@ N_ADD_OP_LIST	: N_ADD_OP N_TERM N_ADD_OP_LIST
                 {
                     printRule("ADD_OP_LIST", 
                               "ADD_OP TERM ADD_OP_LIST");
-                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                    if(isInvalidOperandType($2.type))
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -303,7 +307,7 @@ N_TERM		: N_FACTOR N_MULT_OP_LIST
                     if($2.type == NOT_APPLICABLE){
                         $$.type = $1.type;                       
                     }else{
-                        if($1.type != INT && $1.type != BOOL && $1.type != FLOAT && $1.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                        if(isInvalidOperandType($1.type))
                         {
                             yyerror("Arg 1 must be integer or float or bool");
                         }
@@ -322,7 +326,7 @@ N_MULT_OP_LIST	: N_MULT_OP N_FACTOR N_MULT_OP_LIST
                 {
                     printRule("MULT_OP_LIST", 
                               "MULT_OP FACTOR MULT_OP_LIST");
-                    if($2.type != INT && $2.type != BOOL && $2.type != FLOAT && $2.type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                    if(isInvalidOperandType($2.type))
                     {
                         yyerror("Arg 2 must be integer or float or bool");
                     }
@@ -407,7 +411,10 @@ N_EXPR_LIST     : T_SEMICOLON N_EXPR N_EXPR_LIST
 
 N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR 
                 {
-                    printRule("IF_EXPR", "COND_IF ) THEN_EXPR");
+                    if(($3.type == FUNCTION)){
+                        yyerror("Arg 2 cannot be function");
+                    }   
+					printRule("IF_EXPR", "COND_IF ) THEN_EXPR");
                 }
                 | N_COND_IF T_RPAREN N_THEN_EXPR T_ELSE N_EXPR
                 {
@@ -459,15 +466,13 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
                 ;
 
 
-N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
+N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN 
                 {
                     if((scopeStack.top().findEntry(string($3)).type == FUNCTION)||(scopeStack.top().findEntry(string($3)).type == NULL_TYPE)||(scopeStack.top().findEntry(string($3)).type == LIST))
                         yyerror("Arg 1 cannot be function or null or list");
                     if($5.type != LIST)
                         yyerror("Arg 2 must be list");
-                    $$.type = $7.type;
-                    $$.numParams = NOT_APPLICABLE;
-                    $$.returnType = NOT_APPLICABLE;   
+                     
                     if(scopeStack.top().findEntry(string($3)).type == NOT_APPLICABLE)
 					{
                         string lexeme = string($3);
@@ -478,13 +483,23 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN N_EXPR
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
 							}
-                    else{
-                        if(scopeStack.top().findEntry(string($3)).type != INT_OR_STR_OR_FLOAT_OR_BOOL)
+                    /*
+					else{
+                        if(isInvalidOperandType($3.type))
                             yyerror("Arg 3 must be integer or string or float or bool"); 
-                    }
-                    printRule("FOR_EXPR", 
-                              "FOR ( IDENT IN EXPR ) EXPR");
+					}
+					*/
+                    
+                    
                 }
+				N_EXPR
+				{
+					$$.type = $8.type;
+                    $$.numParams = NOT_APPLICABLE;
+                    $$.returnType = NOT_APPLICABLE;  
+					printRule("FOR_EXPR", 
+                              "FOR ( IDENT IN EXPR ) EXPR");
+				}
                 ;
 
 
@@ -524,12 +539,13 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                 T_ASSIGN N_EXPR
                 {
                     string lexeme = string($1);
-					
+					TYPE_INFO t1=scopeStack.top().findEntry(lexeme);
                     
-						
-                    if(($5.type!=INT)&&($5.type!=BOOL)&&($5.returnType!=INT))
-                        yyerror("Arg 1 must be integer");
-                    TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType};
+					if(((t1.param)==true)&&((isIntCompatible($5.type))==false))
+					{
+						yyerror("Arg 1 must be integer");
+					}
+                    TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType,false};
                     if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
                         if(assignment_statement){
                             printf("___Adding %s to symbol table\n",
@@ -600,9 +616,9 @@ N_INPUT_EXPR    : T_READ T_LPAREN T_RPAREN
                 {
                     printRule("INPUT_EXPR", "READ ( )");
 					
-                    $$.type = NOT_APPLICABLE;
-                    $$.numParams = NOT_APPLICABLE;
-                    $$.returnType = NOT_APPLICABLE;  
+                    $$.type = INT_OR_STR_OR_FLOAT;
+					$$.numParams = NOT_APPLICABLE;
+					$$.returnType = NOT_APPLICABLE;
                 }
                 ;
 
@@ -610,17 +626,22 @@ N_FUNCTION_DEF  : T_FUNCTION
                 {
                     beginScope();
                 }
-                T_LPAREN N_PARAM_LIST T_RPAREN N_COMPOUND_EXPR
+                T_LPAREN N_PARAM_LIST 
+				{
+				x=scopeStack.top().getSize();
+				}
+				T_RPAREN N_COMPOUND_EXPR
                 {
-                    if($6.type == FUNCTION)
+                    
+					if($7.type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
                     printRule("FUNCTION_DEF",
                               "FUNCTION ( PARAM_LIST )"
                               " COMPOUND_EXPR");
                     $$.type = FUNCTION;
-                    $$.numParams = scopeStack.top().getSize();
-                    $$.returnType = $6.returnType; 
+                    $$.numParams = x;
+                    $$.returnType = $7.returnType; 
                     endScope();
                 }
                 ;
@@ -643,12 +664,13 @@ N_NO_PARAMS     : /* epsilon */
 
 N_PARAMS        : T_IDENT
                 {
-                    printRule("PARAMS", "IDENT");
+                    
+					printRule("PARAMS", "IDENT");
                     string lexeme = string($1);
                     if(assignment_statement){
                         printf("___Adding %s to symbol table\n", $1);
                     }
-                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE};
+                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = scopeStack.top().addEntry(
                         SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
                     if(!success) {
@@ -665,7 +687,7 @@ N_PARAMS        : T_IDENT
                     if(assignment_statement){
                     printf("___Adding %s to symbol table\n", $1);}
                     
-                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE};
+                    TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = scopeStack.top().addEntry(
                         SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
                     if(!success) {
@@ -678,16 +700,28 @@ N_PARAMS        : T_IDENT
 
 N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
                 {
-                    if(scopeStack.top().findEntry(string($1)).type != FUNCTION)
-                            yyerror("Arg 2 must be function"); 
-                    if($3!=$$.numParams)
-						yyerror("Too many parameters in function call");
-                    printRule("FUNCTION_CALL", "IDENT"
-                              " ( ARG_LIST )");
-                    if (findEntryInAnyScope($1).type == NOT_APPLICABLE) {
+                    string lexeme = string($1);
+					/*
+					if (findEntryInAnyScope($1).type == NOT_APPLICABLE) {
                         yyerror("Undefined identifier");
                         return(0);
-                    }
+					*/
+					TYPE_INFO temp=scopeStack.top().findEntry(lexeme);
+					if(scopeStack.top().findEntry(string($1)).type != FUNCTION)
+                            yyerror("Arg 2 must be function");
+					//cout<<$3.numParams<<endl;
+					//cout<<temp.numParams<<endl;
+					if($3.numParams>temp.numParams)
+						yyerror("Too many parameters in function call");
+					if($3.numParams<temp.numParams)
+						yyerror("Too few parameters in function call");
+                    printRule("FUNCTION_CALL", "IDENT"
+                              " ( ARG_LIST )");
+					
+					
+                    
+                    
+					
                     
                 }
                 ;
@@ -695,13 +729,16 @@ N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
 N_ARG_LIST      : N_ARGS
                 {
                     printRule("ARG_LIST", "ARGS");
-					$$ = $1;
+					$$.numParams=$1.numParams+1;
+					
+					
+					
 					
                 }
                 | N_NO_ARGS
                 {
                     printRule("ARG_LIST", "NO_ARGS");
-					$$ = 0;
+					$$.numParams = 0;
                 }
                 ;
 
@@ -714,17 +751,27 @@ N_NO_ARGS       : /* epsilon */
 N_ARGS          : N_EXPR
                 {
                     
-					if(($1.type != INT)){
-                        yyerror("Arg 1 must be integer");
+					if(!isIntCompatible($1.type))
+					{
+                        yyerror("Function parameters must be integer");
                     } 
-					$$ = $$ + 1;
+					$$.numParams=$$.numParams+1;
+					
                     printRule("ARGS", "EXPR");
                 }
-                | N_EXPR T_COMMA N_ARGS
+                | N_EXPR 
+				{
+					if(!isIntCompatible($1.type))
+					{
+                        yyerror("Function parameters must be integer");
+                    } 
+				}
+				
+				T_COMMA N_ARGS
                 {
-                    if(($1.type != INT))
-                        yyerror("Arg 1 must be integer");
-					$$ = $$ + 1 + $3;
+                    if(!isIntCompatible($1.type))
+                        yyerror("Function parameters must be integer");
+					$$.numParams = 1+$4.numParams;
                     printRule("ARGS", "EXPR, ARGS");
                 }
                 ;
@@ -922,6 +969,42 @@ TYPE_INFO findEntryInAnyScope(const string the_name) {
     }
 }
 
+bool isIntOrFloatOrBoolCompatible(const int theType)
+{
+    return((theType == INT) || (theType == FLOAT) ||
+		 (theType == BOOL) ||
+           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+}
+
+// Determine whether given type is compatible with INT.
+bool isIntCompatible(const int theType)
+{
+    return((theType == INT) ||
+		(theType == BOOL) ||
+           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+}
+
+// Determine whether given type is compatible with BOOL.
+bool isBoolCompatible(const int theType)
+{
+    return((theType == BOOL) ||
+           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+}
+
+// Determine whether given type is compatible with FLOAT.
+bool isFloatCompatible(const int theType)
+{
+    return((theType == FLOAT) ||
+           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+}
+
+bool isInvalidOperandType(const int theType)
+{
+    return((theType == FUNCTION) ||
+           (theType == NULL_TYPE) ||
+		(theType == LIST) ||
+           (theType == STR));
+}
 int main() 
 {
     beginScope();

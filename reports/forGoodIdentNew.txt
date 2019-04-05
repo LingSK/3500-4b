@@ -1,3 +1,3 @@
-Line 3: Undefined identifier				      |
-							      >	---- Completed parsing ----
-							      >
+
+---- Completed parsing ----					---- Completed parsing ----
+

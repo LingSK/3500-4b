@@ -27,6 +27,7 @@ typedef struct {
   int type;         // one of the above type codes
   int numParams;    // # of parameters if function type
   int returnType;   // return type if function
+  bool param;
 } TYPE_INFO;
 
 class SYMBOL_TABLE_ENTRY
