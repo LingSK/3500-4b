@@ -1,1 +1,1 @@
-Line 7: Arg 2 cannot be function			      |	Line 5: Arg 1 must be integer
+Line 6: Arg 1 cannot be function or null		      |	Line 5: Arg 1 must be integer

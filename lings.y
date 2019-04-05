@@ -56,6 +56,7 @@ extern "C"
     char* text;
     TYPE_INFO typeInfo;
 	int argnum;
+	bool flag;
 };
 
 %token T_IDENT T_INTCONST T_FLOATCONST T_UNKNOWN T_STRCONST 
@@ -477,9 +478,9 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN
 					{
                         string lexeme = string($3);
                         if(assignment_statement){
-                            printf("___Adding %s to symbol table\n", $3);
+                            //printf("___Adding %s to symbol table\n", $3);
                         }
-                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE};
+                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE,false};
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
 							}
@@ -533,29 +534,40 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                         yyerror("Arg 2 cannot be list");
                     printRule("ASSIGNMENT_EXPR", 
                               "IDENT INDEX ASSIGN EXPR");
-                    
+                    string lexeme = string($1);
+                    TYPE_INFO exprTypeInfo =
+                        scopeStack.top().findEntry(lexeme);
+                    if(exprTypeInfo.type == UNDEFINED) 
+					{
+                      if(scopeStack.top().findEntry(string($1)).type==NOT_APPLICABLE)
+                      
+                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
+               
+						$<flag>$ = false;
+					}
+                    else 
+					{ 
+						$<flag>$ = true;
+                    }
                     
                 }
                 T_ASSIGN N_EXPR
                 {
-                    string lexeme = string($1);
-					TYPE_INFO t1=scopeStack.top().findEntry(lexeme);
                     
-					if(((t1.param)==true)&&((isIntCompatible($5.type))==false))
-					{
+                    string lexeme = string($1);
+                    TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
+					//cout<<exprTypeInfo.param<<endl;
+						if(((exprTypeInfo.param)==true)&&((isIntCompatible($5.type))==false))
+						{
 						yyerror("Arg 1 must be integer");
-					}
-                    TYPE_INFO typeinfo = {$5.type, $5.numParams, $5.returnType,false};
-                    if(scopeStack.top().findEntry(lexeme).type == NOT_APPLICABLE) {
-                        if(assignment_statement){
-                            printf("___Adding %s to symbol table\n",
-                               $1);}
-                        scopeStack.top().addEntry(
-                            SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
-                    }       
-                    $$.type = $5.type;
-                    $$.numParams = $5.numParams;
-                    $$.returnType = $5.returnType;	                    
+						}
+                    
+                    scopeStack.top().changeEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType}));
+			    if (($2.type==LIST) &&($5.type == LIST))
+					yyerror("Arg 2 cannot be list");
+                $$.type = $5.type;
+                $$.numParams = $5.numParams;
+                $$.returnType = $5.returnType;                    
                 }
                 ;
 
@@ -668,11 +680,11 @@ N_PARAMS        : T_IDENT
 					printRule("PARAMS", "IDENT");
                     string lexeme = string($1);
                     if(assignment_statement){
-                        printf("___Adding %s to symbol table\n", $1);
+                        //printf("___Adding %s to symbol table\n", $1);
                     }
                     TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = scopeStack.top().addEntry(
-                        SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
+                        SYMBOL_TABLE_ENTRY(lexeme, {INT, NOT_APPLICABLE, NOT_APPLICABLE,true}));
                     if(!success) {
                         yyerror("Multiply defined identifier");
                         return(0);
@@ -685,7 +697,8 @@ N_PARAMS        : T_IDENT
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string($1);
                     if(assignment_statement){
-                    printf("___Adding %s to symbol table\n", $1);}
+                    //printf("___Adding %s to symbol table\n", $1);
+					}
                     
                     TYPE_INFO typeinfo = {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = scopeStack.top().addEntry(
