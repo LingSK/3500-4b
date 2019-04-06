@@ -114,6 +114,7 @@ N_EXPR          : N_IF_EXPR
                     $$.type = $1.type;
                     $$.numParams = $1.numParams;
                     $$.returnType = $1.returnType;
+					$$.param=$1.param;
                     printRule("EXPR", "FOR_EXPR");
                 }
                 | N_COMPOUND_EXPR
@@ -135,7 +136,8 @@ N_EXPR          : N_IF_EXPR
                     printRule("EXPR", "ASSIGNMENT_EXPR");
                     $$.type = $1.type;
                     $$.numParams = $1.numParams;
-                    $$.returnType = $1.returnType;                
+                    $$.returnType = $1.returnType;
+					$$.param=$1.param;
                 }
                 | N_OUTPUT_EXPR
                 {
@@ -570,7 +572,8 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 					yyerror("Arg 2 cannot be list");
                 $$.type = $5.type;
                 $$.numParams = $5.numParams;
-                $$.returnType = $5.returnType;                    
+                $$.returnType = $5.returnType; 
+				$$.param=$5.param;
                 }
                 ;
 
