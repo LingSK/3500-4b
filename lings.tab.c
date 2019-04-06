@@ -2028,11 +2028,11 @@ yyreduce:
 					}
 						else if(exprTypeInfo.param==true)
 						{
-							if(!isIntCompatible(exprTypeInfo.type))
+							if(!isIntCompatible(exprTypeInfo.type)&&pdf)
 								yyerror("Arg 1 must be integer");
 							else
 							{
-							if(isIntCompatible((yyvsp[0].typeInfo).type)==false)
+							if((isIntCompatible((yyvsp[0].typeInfo).type)==false)&&pdf)
 								yyerror("Arg 1 must be integer");
 							}
 						}
