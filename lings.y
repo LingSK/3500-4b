@@ -673,14 +673,10 @@ N_FUNCTION_DEF  : T_FUNCTION
                 {
                     beginScope();
                 }
-                T_LPAREN N_PARAM_LIST 
-				{
-				x=scopeStack.top().getSize();
-				}
-				T_RPAREN N_COMPOUND_EXPR
+                T_LPAREN N_PARAM_LIST T_RPAREN N_COMPOUND_EXPR
                 {
-                    
-					if($7.type == FUNCTION)
+                    x=scopeStack.top().getSize();
+					if($6.type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
                     printRule("FUNCTION_DEF",
@@ -688,7 +684,7 @@ N_FUNCTION_DEF  : T_FUNCTION
                               " COMPOUND_EXPR");
                     $$.type = FUNCTION;
                     $$.numParams = x;
-                    $$.returnType = $7.type; 
+                    $$.returnType = $6.type; 
                     endScope();
                 }
                 ;
