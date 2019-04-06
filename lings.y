@@ -678,7 +678,7 @@ N_FUNCTION_DEF  : T_FUNCTION
                               " COMPOUND_EXPR");
                     $$.type = FUNCTION;
                     $$.numParams = x;
-                    $$.returnType = $7.returnType; 
+                    $$.returnType = $7.type; 
                     endScope();
                 }
                 ;
