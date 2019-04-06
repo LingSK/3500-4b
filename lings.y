@@ -753,13 +753,15 @@ N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
 					*/
 					TYPE_INFO temp=scopeStack.top().findEntry(lexeme);
 					if(scopeStack.top().findEntry(string($1)).type != FUNCTION)
-                            yyerror("Arg 2 must be function");
+                            yyerror("Arg 1 must be function");
 					//cout<<$3.numParams<<endl;
 					//cout<<temp.numParams<<endl;
 					if($3.numParams>temp.numParams)
 						yyerror("Too many parameters in function call");
-					if($3.numParams<temp.numParams)
+					else if($3.numParams<temp.numParams)
 						yyerror("Too few parameters in function call");
+					else
+						$$.type=scopeStack.top().findEntry(string($1)).returnType;
                     printRule("FUNCTION_CALL", "IDENT"
                               " ( ARG_LIST )");
 					
