@@ -24,6 +24,7 @@ bool isIntCompatible(const int theType);
 bool isBoolCompatible(const int theType);
 bool isFloatCompatible(const int theType);
 bool isInvalidOperandType(const int theType);
+bool isINTorSTRorFLOATorBOOLcompatible(const int theType);
 
 stack<SYMBOL_TABLE> scopeStack; // stack of scope hashtables
 int x=0;
@@ -1023,26 +1024,24 @@ bool isIntOrFloatOrBoolCompatible(const int theType)
 bool isINTorSTRorFLOATorBOOLcompatible(const int theType)
 {
 	return((theType==INT)||(theType==FLOAT)||(theType==BOOL)||(theType==STR)||(theType==INT_OR_STR_OR_FLOAT_OR_BOOL));
+}
 // Determine whether given type is compatible with INT.
 bool isIntCompatible(const int theType)
 {
-    return((theType == INT) ||
-		(theType == BOOL) ||
-           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+    return((theType & INT) ||(theType & BOOL);
+          
 }
 
 // Determine whether given type is compatible with BOOL.
 bool isBoolCompatible(const int theType)
 {
-    return((theType == BOOL) ||
-           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+    return((theType & BOOL);
 }
 
 // Determine whether given type is compatible with FLOAT.
 bool isFloatCompatible(const int theType)
 {
-    return((theType == FLOAT) ||
-           (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
+    return((theType & FLOAT);
 }
 
 bool isInvalidOperandType(const int theType)
