@@ -686,7 +686,7 @@ N_PARAMS        : T_IDENT
                     string lexeme = string($1);
                    
                     // assuming params are ints
-					cout<<lexeme.param<<" before"<<endl;
+					//cout<<lexeme.param<<" before"<<endl;
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = 
@@ -701,7 +701,7 @@ N_PARAMS        : T_IDENT
                 {
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string($1);
-                    cout<<lexeme.param<<" before"<<endl;
+                    //cout<<lexeme.param<<" before"<<endl;
                     // assuming params are ints 
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
