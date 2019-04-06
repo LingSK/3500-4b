@@ -1,1 +1,1 @@
-Line 3: Arg 2 cannot be function				Line 3: Arg 2 cannot be function
+0Line 3: Arg 2 cannot be function			      |	Line 3: Arg 2 cannot be function
