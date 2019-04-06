@@ -570,11 +570,11 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 					}
 						else if(exprTypeInfo.param==true)
 						{
-							if(!isIntCompatible(exprTypeInfo.type))
+							if(!isIntCompatible(exprTypeInfo.type)&&pdf)
 								yyerror("Arg 1 must be integer");
 							else
 							{
-							if(isIntCompatible($5.type)==false)
+							if((isIntCompatible($5.type)==false)&&pdf)
 								yyerror("Arg 1 must be integer");
 							}
 						}
