@@ -541,7 +541,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                         scopeStack.top().findEntry(lexeme);
                     if(exprTypeInfo.type == UNDEFINED) 
 					{
-                      if(scopeStack.top().findEntry(string($1)).type==NOT_APPLICABLE)
+                      //if(scopeStack.top().findEntry(string($1)).type==NOT_APPLICABLE)
                       
                       scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
                
@@ -558,18 +558,33 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
+						if(exprTypeInfo.type == UNDEFINED) 
+					{
+                      //if(scopeStack.top().findEntry(string($5)).type==NOT_APPLICABLE)
+                      
+                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType,$5.param}));
+               
 						
-						cout<<exprTypeInfo.param<<"isparam"<<endl;
-						cout<<isIntCompatible($5.type)<<"intcompatible"<<endl;
-						cout<<pdf<<"pdf"<<endl;
-						if(((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(pdf==true))
+					}
+						
+						else if(((exprTypeInfo.param)==true)&&(isIntCompatible(lexeme))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
-                    
+						else if((exprTypeInfo.param==true)&&(isIntCompatible($5.type)==true))
+						{
+						yyerror("Arg 1 must be integer");
+						}
+						
+						
+                    cout<<exprTypeInfo.param<<"isparam"<<endl;
+						cout<<isIntCompatible($5.type)<<"intcompatible"<<endl;
+						cout<<pdf<<"pdf"<<endl;
                     scopeStack.top().changeEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType}));
-			    if (($2.type==LIST) &&($5.type == LIST))
-					yyerror("Arg 2 cannot be list");
+			    if (($2.type==LIST) &&(exprTypeInfo.type != LIST))
+					yyerror("Arg 1 must be list");
+				if (($2.type==LIST) &&($5.type == LIST))
+					yyerror("Arg 1 cannot be list");
                 $$.type = $5.type;
                 $$.numParams = $5.numParams;
                 $$.returnType = $5.returnType; 
@@ -695,7 +710,7 @@ N_PARAMS        : T_IDENT
                         (lexeme, exprTypeInfo));
                     if(!success) 
                     yyerror("Multiply defined identifier");
-					cout<<lexeme.param<<" after"<<endl;
+					//cout<<lexeme.param<<" after"<<endl;
                 }
                 | T_IDENT T_COMMA N_PARAMS
                 {
@@ -710,7 +725,7 @@ N_PARAMS        : T_IDENT
                       SYMBOL_TABLE_ENTRY(lexeme, exprTypeInfo));
                     if(!success) 
 				yyerror("Multiply defined identifier");
-				cout<<lexeme.param<<" after"<<endl;
+				//cout<<lexeme.param<<" after"<<endl;
                 }
                 ;
                 
