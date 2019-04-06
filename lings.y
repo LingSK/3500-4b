@@ -416,17 +416,20 @@ N_IF_EXPR       : N_COND_IF T_RPAREN N_THEN_EXPR
                 {
                     if(($3.type == FUNCTION)){
                         yyerror("Arg 2 cannot be function");
-                    }   
+                    } 
+					$$.type=$3.type;
 					printRule("IF_EXPR", "COND_IF ) THEN_EXPR");
                 }
                 | N_COND_IF T_RPAREN N_THEN_EXPR T_ELSE N_EXPR
                 {
                     if(($3.type == FUNCTION)){
-                        yyerror("Arg 2 cannot be function");
+                        yyerror("Arg 1 cannot be function");
                     }   
-                    if(($5.type == FUNCTION)){
+                    else if(($5.type == FUNCTION)){
                         yyerror("Arg 3 cannot be function");
-                    }   
+                    }  
+					else
+					$$.type=$3.type|$5.type;
                     printRule("IF_EXPR", 
                               "COND_IF ) THEN_EXPR ELSE EXPR");
                 }
