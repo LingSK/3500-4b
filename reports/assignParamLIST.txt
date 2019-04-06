@@ -1,4 +1,1 @@
-0isparam						      <
-0intcompatible						      <
-0pdf							      <
 Line 5: Arg 1 must be integer					Line 5: Arg 1 must be integer
