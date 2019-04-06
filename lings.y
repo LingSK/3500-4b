@@ -567,7 +567,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 						
 					}
 						
-						else if(((exprTypeInfo.param)==true)&&(isIntCompatible(lexeme))==false&&(pdf==true))
+						else if(((exprTypeInfo.param)==true)&&isIntCompatible(lexeme)==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
