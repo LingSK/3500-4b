@@ -31,7 +31,7 @@ void beginScope();
 void endScope();
 void cleanUp();
 TYPE_INFO findEntryInAnyScope(const string the_name);
-
+bool pdf;
 void printTokenInfo(const char* token_type, const char* lexeme);
 
 void printRule(const char *, const char *);
@@ -543,11 +543,11 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                       
                       scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
                
-						$<flag>$ = false;
+						pdf = false;
 					}
                     else 
 					{ 
-						$<flag>$ = true;
+						pdf = true;
                     }
                     
                 }
@@ -557,7 +557,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
 					
-						if(((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(flag==true))
+						if(((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
