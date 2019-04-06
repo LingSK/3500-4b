@@ -1,3 +1,13 @@
-Line 8: Arg 1 must be integer				      |
-							      >	---- Completed parsing ----
-							      >
+0							      |
+1							      |	---- Completed parsing ----
+1							      |
+0							      <
+1							      <
+1							      <
+0							      <
+1							      <
+1							      <
+0							      <
+0							      <
+0							      <
+Line 8: Arg 1 must be integer				      <

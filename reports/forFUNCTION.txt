@@ -1,1 +1,7 @@
+0							      <
+0							      <
+0							      <
+0							      <
+1							      <
+0							      <
 Line 4: Arg 2 must be list					Line 4: Arg 2 must be list
