@@ -2160,7 +2160,7 @@ yyreduce:
                               " COMPOUND_EXPR");
                     (yyval.typeInfo).type = FUNCTION;
                     (yyval.typeInfo).numParams = x;
-                    (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).returnType; 
+                    (yyval.typeInfo).returnType = (yyvsp[0].typeInfo).type; 
                     endScope();
                 }
 #line 2167 "lings.tab.c" /* yacc.c:1646  */
