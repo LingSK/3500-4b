@@ -1921,7 +1921,7 @@ yyreduce:
                         if(assignment_statement){
                             //printf("___Adding %s to symbol table\n", $3);
                         }
-                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE,false};
+                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE,true};
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
 							}
@@ -1995,7 +1995,7 @@ yyreduce:
 					{
                       if(scopeStack.top().findEntry(string((yyvsp[-1].text))).type==NOT_APPLICABLE)
                       
-                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
+                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,true}));
                
 						pdf = false;
 					}
