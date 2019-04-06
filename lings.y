@@ -474,11 +474,16 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
 
 N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN 
                 {
-                    if((scopeStack.top().findEntry(string($3)).type == FUNCTION)||(scopeStack.top().findEntry(string($3)).type == NULL_TYPE)||(scopeStack.top().findEntry(string($3)).type == LIST))
+                    if(scopeStack.top().findEntry(string($3)).type==UNDEFINED)
+						scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{INT_OR_STR_OR_FLOAT_OR_BOOL, 0,NOT_APPLICABLE,false}));
+					else 
+					{
+					if(!isINTorSTRorFLOATorBOOLcompatible(scopeStack.top().findEntry(string($3))))
                         yyerror("Arg 1 cannot be function or null or list");
-                    if($5.type != LIST)
+                    }
+					if($5.type != LIST)
                         yyerror("Arg 2 must be list");
-                     
+                     /*
                     if(scopeStack.top().findEntry(string($3)).type == NOT_APPLICABLE)
 					{
                         string lexeme = string($3);
@@ -489,7 +494,7 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
 							}
-                    /*
+                    
 					else{
                         if(isInvalidOperandType($3.type))
                             yyerror("Arg 3 must be integer or string or float or bool"); 
@@ -501,8 +506,8 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN
 				N_EXPR
 				{
 					$$.type = $8.type;
-                    $$.numParams = NOT_APPLICABLE;
-                    $$.returnType = NOT_APPLICABLE;  
+                    $$.numParams = $8.numParams;
+                    $$.returnType = $8.returnType;  
 					printRule("FOR_EXPR", 
                               "FOR ( IDENT IN EXPR ) EXPR");
 				}
@@ -1015,6 +1020,9 @@ bool isIntOrFloatOrBoolCompatible(const int theType)
            (theType == INT_OR_STR_OR_FLOAT_OR_BOOL));
 }
 
+bool isINTorSTRorFLOATorBOOLcompatible(const int theType)
+{
+	return((theType==INT)||(theType==FLOAT)||(theType==BOOL)||(theType==STR)||(theType==INT_OR_STR_OR_FLOAT_OR_BOOL));
 // Determine whether given type is compatible with INT.
 bool isIntCompatible(const int theType)
 {
