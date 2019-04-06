@@ -475,7 +475,8 @@ N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
 
 N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN 
                 {
-                    if(scopeStack.top().findEntry(string($3)).type==UNDEFINED)
+                    string lexeme=string($3);
+					if(scopeStack.top().findEntry(string($3)).type==UNDEFINED)
 						scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{INT_OR_STR_OR_FLOAT_OR_BOOL, 0,NOT_APPLICABLE,false}));
 					else 
 					{
