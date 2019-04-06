@@ -1,7 +1,7 @@
-0							      |	Line 5: Arg 1 must be integer
-0							      <
-0							      <
-0							      <
-0							      <
-1							      <
+0isparam						      |	Line 5: Arg 1 must be integer
+0intcompatible						      <
+0pdf							      <
+0isparam						      <
+0intcompatible						      <
+1pdf							      <
 Line 6: Arg 1 cannot be function or null		      <
