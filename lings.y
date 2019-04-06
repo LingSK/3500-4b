@@ -678,6 +678,7 @@ N_FUNCTION_DEF  : T_FUNCTION
                 T_LPAREN N_PARAM_LIST T_RPAREN N_COMPOUND_EXPR
                 {
                     x=scopeStack.top().getSize();
+					cout<<$6.type;
 					if($6.type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
