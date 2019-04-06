@@ -1028,20 +1028,20 @@ bool isINTorSTRorFLOATorBOOLcompatible(const int theType)
 // Determine whether given type is compatible with INT.
 bool isIntCompatible(const int theType)
 {
-    return((theType & INT) ||(theType & BOOL);
+    return((theType & INT) ||(theType & BOOL));
           
 }
 
 // Determine whether given type is compatible with BOOL.
 bool isBoolCompatible(const int theType)
 {
-    return((theType & BOOL);
+    return(theType & BOOL);
 }
 
 // Determine whether given type is compatible with FLOAT.
 bool isFloatCompatible(const int theType)
 {
-    return((theType & FLOAT);
+    return(theType & FLOAT);
 }
 
 bool isInvalidOperandType(const int theType)
