@@ -558,7 +558,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
-						if(exprTypeInfo.type == UNDEFINED) 
+					if(exprTypeInfo.type == UNDEFINED) 
 					{
                       //if(scopeStack.top().findEntry(string($5)).type==NOT_APPLICABLE)
                       
@@ -566,14 +566,15 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                
 						
 					}
-						
-						else if((exprTypeInfo.param==true)&&(!isIntCompatible(exprTypeInfo.type))&&(pdf==true))
+						else if(exprTypeInfo.param==true)
 						{
-						yyerror("Arg 1 must be integer");
-						}
-						else if((exprTypeInfo.param==true)&&(isIntCompatible($5.type)==true))
-						{
-						yyerror("Arg 1 must be integer");
+							if(!isIntCompatible(exprTypeInfo.type))
+								yyerror("Arg 1 must be integer");
+							else
+							{
+							if(isIntCompatible($5.type)==false)
+								yyerror("Arg 1 must be integer");
+							}
 						}
 						
 						
