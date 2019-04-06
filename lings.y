@@ -556,8 +556,8 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
-					//cout<<exprTypeInfo.param<<endl;
-						if(((exprTypeInfo.param)==true)&&((isIntCompatible($5.type))==false))
+					
+						if((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(flag==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
