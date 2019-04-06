@@ -54,7 +54,7 @@ public:
     typeInfo.type = theType.type;
     typeInfo.numParams = theType.numParams;
     typeInfo.returnType = theType.returnType;
-	typeInfo.param=false;
+	typeInfo.param=theType.param;
   }
 
   // Accessors
