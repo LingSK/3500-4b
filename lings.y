@@ -556,7 +556,10 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
                     
                     string lexeme = string($1);
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
-					
+						
+						cout<<exprTypeInfo.param<<endl;
+						cout<<isIntCompatible($5.type))<<endl;
+						cout<<pdf<<endl;
 						if(((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
