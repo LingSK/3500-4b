@@ -2156,7 +2156,7 @@ yyreduce:
 #line 679 "lings.y" /* yacc.c:1646  */
     {
                     x=scopeStack.top().getSize();
-					cout<<(yyvsp[0].typeInfo).type;
+					//cout<<$6.type;
 					if((yyvsp[0].typeInfo).type == FUNCTION)
                             yyerror("Arg 2 cannot be function"); 
                     
