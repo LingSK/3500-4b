@@ -1,7 +1,7 @@
-0isparam						      <
+1isparam						      <
 0intcompatible						      <
 0pdf							      <
-0isparam						      <
+1isparam						      <
 0intcompatible						      <
 0pdf							      <
 

@@ -1,7 +1,7 @@
-0isparam						      |	Line 4: Arg 1 must be integer
+1isparam						      |	Line 4: Arg 1 must be integer
 0intcompatible						      <
 1pdf							      <
-0isparam						      <
+1isparam						      <
 0intcompatible						      <
 1pdf							      <
 							      <
