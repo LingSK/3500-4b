@@ -480,7 +480,7 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN
 						scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{INT_OR_STR_OR_FLOAT_OR_BOOL, 0,NOT_APPLICABLE,false}));
 					else 
 					{
-					if(!isINTorSTRorFLOATorBOOLcompatible(scopeStack.top().findEntry(string($3))))
+					if(!isINTorSTRorFLOATorBOOLcompatible(scopeStack.top().findEntry(string($3))).type)
                         yyerror("Arg 1 cannot be function or null or list");
                     }
 					if($5.type != LIST)
