@@ -1,7 +1,4 @@
-0isparam						      |	Line 5: Arg 1 must be integer
+0isparam						      <
 0intcompatible						      <
 0pdf							      <
-1isparam						      <
-0intcompatible						      <
-1pdf							      <
-Line 6: Arg 1 cannot be function or null		      <
+Line 5: Arg 1 must be integer					Line 5: Arg 1 must be integer

@@ -1,9 +1,3 @@
-1isparam						      <
-0intcompatible						      <
-1pdf							      <
-0isparam						      <
-0intcompatible						      <
-1pdf							      <
-
----- Completed parsing ----					---- Completed parsing ----
-
+Line 4: Arg 1 must be integer				      |
+							      >	---- Completed parsing ----
+							      >
