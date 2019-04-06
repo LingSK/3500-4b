@@ -579,10 +579,11 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 							}
 						}
 						
-						
+					/*	
                     cout<<exprTypeInfo.param<<"isparam"<<endl;
 						cout<<isIntCompatible($5.type)<<"intcompatible"<<endl;
 						cout<<pdf<<"pdf"<<endl;
+					*/
                     scopeStack.top().changeEntry(SYMBOL_TABLE_ENTRY(lexeme,{$5.type, $5.numParams,$5.returnType}));
 			    if (($2.type==LIST) &&(exprTypeInfo.type != LIST))
 					yyerror("Arg 1 must be list");
