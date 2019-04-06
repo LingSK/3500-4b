@@ -2018,7 +2018,7 @@ yyreduce:
 						cout<<exprTypeInfo.param<<"isparam"<<endl;
 						cout<<isIntCompatible((yyvsp[0].typeInfo).type)<<"intcompatible"<<endl;
 						cout<<pdf<<"pdf"<<endl;
-						if(((exprTypeInfo.param)==true)&&(!isIntCompatible((yyvsp[0].typeInfo).type))==false&&(pdf==true))
+						if(((exprTypeInfo.param)==true)&&(isIntCompatible((yyvsp[0].typeInfo).type))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
