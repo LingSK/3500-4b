@@ -480,7 +480,7 @@ N_FOR_EXPR      : T_FOR T_LPAREN T_IDENT T_IN N_EXPR T_RPAREN
                         if(assignment_statement){
                             //printf("___Adding %s to symbol table\n", $3);
                         }
-                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE,true};
+                        TYPE_INFO typeinfo = {INT_OR_STR_OR_FLOAT_OR_BOOL, NOT_APPLICABLE, NOT_APPLICABLE,false};
                         bool success = scopeStack.top().addEntry(
                             SYMBOL_TABLE_ENTRY(lexeme, typeinfo));
 							}
@@ -541,7 +541,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 					{
                       if(scopeStack.top().findEntry(string($1)).type==NOT_APPLICABLE)
                       
-                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,true}));
+                      scopeStack.top().addEntry(SYMBOL_TABLE_ENTRY(lexeme,{NOT_APPLICABLE, NOT_APPLICABLE,NOT_APPLICABLE,false}));
                
 						pdf = false;
 					}
