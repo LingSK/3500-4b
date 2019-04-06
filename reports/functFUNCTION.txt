@@ -1,9 +1,9 @@
-0							      |	Line 5: Arg 2 cannot be function
-0							      <
-0							      <
-0							      <
-0							      <
-0							      <
+0isparam						      |	Line 5: Arg 2 cannot be function
+0intcompatible						      <
+0pdf							      <
+0isparam						      <
+0intcompatible						      <
+0pdf							      <
 							      <
 ---- Completed parsing ----				      <
 							      <

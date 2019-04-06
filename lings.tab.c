@@ -2015,10 +2015,10 @@ yyreduce:
                     string lexeme = string((yyvsp[-4].text));
                     TYPE_INFO exprTypeInfo = scopeStack.top().findEntry(lexeme);
 						
-						cout<<exprTypeInfo.param<<endl;
-						cout<<isIntCompatible((yyvsp[0].typeInfo).type)<<endl;
-						cout<<pdf<<endl;
-						if(((exprTypeInfo.param)==true)&&(isIntCompatible((yyvsp[0].typeInfo).type))==false&&(pdf==true))
+						cout<<exprTypeInfo.param<<"isparam"<<endl;
+						cout<<isIntCompatible((yyvsp[0].typeInfo).type)<<"intcompatible"<<endl;
+						cout<<pdf<<"pdf"<<endl;
+						if(((exprTypeInfo.param)==true)&&(!isIntCompatible((yyvsp[0].typeInfo).type))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
