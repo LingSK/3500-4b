@@ -686,6 +686,7 @@ N_PARAMS        : T_IDENT
                     string lexeme = string($1);
                    
                     // assuming params are ints
+					cout<<exprTypeInfo.param<<" before"<<endl;
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
                     bool success = 
@@ -694,12 +695,13 @@ N_PARAMS        : T_IDENT
                         (lexeme, exprTypeInfo));
                     if(!success) 
                     yyerror("Multiply defined identifier");
+					cout<<exprTypeInfo.param<<" after"<<endl;
                 }
                 | T_IDENT T_COMMA N_PARAMS
                 {
                     printRule("PARAMS", "IDENT, PARAMS");
                     string lexeme = string($1);
-                    
+                    cout<<exprTypeInfo.param<<" before"<<endl;
                     // assuming params are ints 
                     TYPE_INFO exprTypeInfo = 
                      {INT, NOT_APPLICABLE, NOT_APPLICABLE,true};
@@ -708,9 +710,10 @@ N_PARAMS        : T_IDENT
                       SYMBOL_TABLE_ENTRY(lexeme, exprTypeInfo));
                     if(!success) 
 				yyerror("Multiply defined identifier");
+				cout<<exprTypeInfo.param<<" after"<<endl;
                 }
                 ;
-                ;
+                
 
 N_FUNCTION_CALL : T_IDENT T_LPAREN N_ARG_LIST T_RPAREN
                 {
