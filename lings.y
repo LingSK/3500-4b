@@ -448,6 +448,8 @@ N_COND_IF       : T_IF T_LPAREN N_EXPR
 N_THEN_EXPR     : N_EXPR
                 {
                     printRule("THEN_EXPR","EXPR");
+					if($1.type==FUNCTION)
+						yyerror("Arg 2 cannot be function");
                 };
 
 N_WHILE_EXPR    : T_WHILE T_LPAREN N_EXPR
