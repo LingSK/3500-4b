@@ -560,7 +560,7 @@ N_ASSIGNMENT_EXPR : T_IDENT N_INDEX
 						cout<<exprTypeInfo.param<<"isparam"<<endl;
 						cout<<isIntCompatible($5.type)<<"intcompatible"<<endl;
 						cout<<pdf<<"pdf"<<endl;
-						if(((exprTypeInfo.param)==true)&&(!isIntCompatible($5.type))==false&&(pdf==true))
+						if(((exprTypeInfo.param)==true)&&(isIntCompatible($5.type))==false&&(pdf==true))
 						{
 						yyerror("Arg 1 must be integer");
 						}
